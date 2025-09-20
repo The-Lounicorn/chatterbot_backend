@@ -1,0 +1,9 @@
+
+Flask==2.3.3
+Flask_Cors==4.0.0
+torch==2.2.1
+torchvision
+torchaudio
+transformers==4.38.2
+sentencepiece
+gunicorn
