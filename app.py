@@ -15,9 +15,9 @@ HEADERS = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
 conversation_history = []
 MAX_TURNS = 6
 
-@app.route('/')
+@app.route('/', methods=['GET', 'HEAD'])
 def home():
-    return render_template('index.html')
+    return jsonify({"status": "Backend is running"}), 200
 
 @app.route('/chatbot', methods=['POST'])
 def handle_prompt():
