@@ -1,6 +1,6 @@
 FROM python:3.10
 
-WORKDIR /app
+WORKDIR /chatterbot_backend
 
 COPY requirements.txt .
 
