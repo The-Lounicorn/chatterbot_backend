@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 import requests
@@ -39,10 +38,19 @@ def handle_prompt():
         # Prepare payload for Hugging Face API
         payload = {"inputs": formatted_history + f"User: {input_text}"}
         response = requests.post(API_URL, headers=HEADERS, json=payload)
-        response_json = response.json()
 
-        # Extract response from Hugging Face API
-        bot_response = response_json[0]['generated_text'] if 'generated_text' in response_json[0] else "Sorry, I couldn't respond."
+        try:
+            response_json = response.json()
+        except ValueError:
+            # API returned something that's not JSON
+            return jsonify({'error': 'Invalid response from Hugging Face API'}), 502
+
+        # Extract response safely
+        if isinstance(response_json, list) and len(response_json) > 0 and 'generated_text' in response_json[0]:
+            bot_response = response_json[0]['generated_text']
+        else:
+            bot_response = "Sorry, I couldn't respond."
+
         conversation_history.append(input_text)
         conversation_history.append(bot_response)
 
